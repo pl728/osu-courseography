@@ -110,8 +110,8 @@ window.addEventListener("resize", () => {
 
 // Create a simulation for the force layout
 const simulation = d3.forceSimulation(nodes)
-    .force("link", d3.forceLink(links).id(d => d.id).distance(300)) // Adjust link distance
-    .force("charge", d3.forceManyBody().strength(-200)) // Adjust charge strength
+    .force("link", d3.forceLink(links).id(d => d.id).distance(200).strength(2)) // Adjust link distance and strength
+    .force("charge", d3.forceManyBody().strength(-250)) // Adjust charge strength
     .force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2).strength(0.1)); // Increase centering force strength
 
 // Add links (edges)
@@ -143,8 +143,9 @@ const label = svg.append("g")
     .selectAll("text")
     .data(nodes)
     .enter().append("text")
-    .attr("dy", -15)
+    .attr("dy", -10)
     .attr("text-anchor", "middle")
+    .attr("style", "font-size: 10px;") // Adjust the font size here
     .text(d => d.name);
 
 // Update positions on each tick
