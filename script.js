@@ -1,15 +1,4 @@
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-
-// const nodes = [
-//     { id: 101, x: 100, y: 100, name: "CS 101" },
-//     { id: 161, x: 100, y: 200, name: "CS 161" }
-// ];
-
-// const links = [
-//     { source: 161, target: 162 },
-//     { source: 161, target: 271 }
-// ];
-
+// Original data
 const nodes = [
     { id: 112, x: 100, y: 100, name: "MTH 112" },
     { id: 161, x: 200, y: 100, name: "CS 161" },
@@ -116,7 +105,6 @@ const links = [
     { source: 361, target: 467 },
     { source: 362, target: 467 },
     { source: 344, target: 467 },
-    // { source: 352, target: 468 },
     { source: 344, target: 472 },
     { source: 370, target: 473 },
     { source: 344, target: 473 },
@@ -128,138 +116,103 @@ const links = [
     { source: 381, target: 480 },
     { source: 261, target: 491 },
     { source: 225, target: 491 },
-    // { source: 252, target: 491 },
     { source: 344, target: 492 },
     { source: 290, target: 493 },
     { source: 340, target: 493 },
     { source: 372, target: 493 }
 ];
 
-// Define a color scale for different course levels
-const colorScale = d3.scaleOrdinal()
-    .domain(["100", "200", "300", "400", "500"])
-    .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]);
+// Convert nodes and links into Cytoscape format
+const cyNodes = nodes.map(node => ({
+    data: { id: node.id, name: node.name },
+    position: { x: node.x, y: node.y }
+}));
 
+const cyEdges = links.map(link => ({
+    data: { id: `${link.source}-${link.target}`, source: link.source, target: link.target }
+}));
 
-// Create the SVG element
-const svg = d3.select("#canvas-container")
-    .append("svg")
-    .attr("width", window.innerWidth)
-    .attr("height", window.innerHeight)
-    .style("display", "block")
-    .call(d3.zoom().on("zoom", zoomed)) // Apply zoom behavior
-    .append("g"); // Add a group to hold all elements
-
-// Define arrowhead marker
-svg.append("defs").append("marker")
-    .attr("id", "arrowhead")
-    .attr("viewBox", "-0 -5 10 10")
-    .attr("refX", 13)
-    .attr("refY", 0)
-    .attr("orient", "auto")
-    .attr("markerWidth", 10)
-    .attr("markerHeight", 10)
-    .attr("xoverflow", "visible")
-    .append("svg:path")
-    .attr("d", "M 0,-5 L 10 ,0 L 0,5")
-    .attr("fill", "#999")
-    .style("stroke", "none");
-
-// Function to resize the canvas on window resize
-window.addEventListener("resize", () => {
-    d3.select("svg")
-        .attr("width", window.innerWidth)
-        .attr("height", window.innerHeight);
-});
-
-// Create a simulation for the force layout
-const simulation = d3.forceSimulation(nodes)
-    .force("link", d3.forceLink(links).id(d => d.id).distance(50).strength(1)) // Adjust link distance and strength
-    .force("charge", d3.forceManyBody().strength(-250)) // Adjust charge strength
-    .force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2).strength(0.1)); // Increase centering force strength
-
-// Add links (edges)
-const link = svg.append("g")
-    .attr("class", "links")
-    .selectAll("line")
-    .data(links)
-    .enter().append("line")
-    .attr("stroke", "#999")
-    .attr("stroke-width", 2)
-    .attr("marker-end", "url(#arrowhead)"); // Apply the arrowhead marker
-
-// Add nodes
-const node = svg.append("g")
-    .attr("class", "nodes")
-    .selectAll("circle")
-    .data(nodes)
-    .enter().append("circle")
-    .attr("r", 10)
-    .attr("fill", d => colorScale(d.name.split(" ")[1].substring(0, 1) + "00")) // Apply color based on course level
-    .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
-
-
-// Add labels
-const label = svg.append("g")
-    .attr("class", "labels")
-    .selectAll("text")
-    .data(nodes)
-    .enter().append("a") // Append <a> element
-    .attr("xlink:href", d => `https://catalog.oregonstate.edu/search/?P=${d.name.replace(' ', '%20')}`) // Set the href attribute
-    .attr("target", "_blank") // Open link in new tab
-    .append("text") // Append <text> element
-    .attr("dy", -10)
-    .attr("text-anchor", "middle")
-    .attr("style", "font-size: 10px;") // Adjust the font size here
-    .text(d => d.name);
-
-
-// Update positions on each tick
-simulation.on("tick", () => {
-    link
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x)
-        .attr("y2", d => d.target.y);
-
-    node
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y);
-
-    label
-        .attr("x", d => d.x)
-        .attr("y", d => d.y);
-});
-
-// Zoomed function to handle zoom and pan
-function zoomed(event) {
-    svg.attr("transform", event.transform);
-}
-
-nodes.forEach(node => {
-    if ([112, 161, 162, 225, 261].includes(node.id)) { // Example: pinning these nodes
-        node.fixed = true;
+// Initialize Cytoscape
+var cy = cytoscape({
+  container: document.getElementById('cy'),
+  elements: [...cyNodes, ...cyEdges],
+  style: [
+    {
+      selector: 'node',
+      style: {
+        'background-color': '#28a745',
+        'label': 'data(name)',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'color': '#fff',
+        'text-outline-width': 2,
+        'text-outline-color': '#28a745',
+        'font-size': 14,
+        'shape': 'round-rectangle',
+        'width': 'label',
+        'height': 'label',
+        'padding': '10px'
+      }
+    },
+    {
+      selector: 'edge',
+      style: {
+        'width': 4,
+        'line-color': '#333',
+        'target-arrow-color': '#333',
+        'target-arrow-shape': 'triangle',
+        'curve-style': 'bezier'
+      }
+    },
+    {
+      selector: '.highlighted',
+      style: {
+        'background-color': '#ffeb3b',
+        'line-color': '#ffeb3b',
+        'target-arrow-color': '#ffeb3b',
+        'transition-property': 'background-color, line-color, target-arrow-color',
+        'transition-duration': '0.5s'
+      }
     }
+  ],
+  layout: {
+    name: 'cose',
+    animate: true,
+    animationDuration: 1000,
+    fit: true,
+    padding: 10,
+    nodeRepulsion: function (node) { return 2048; },
+    idealEdgeLength: function (edge) { return 32; },
+    edgeElasticity: function (edge) { return 32; },
+    gravity: 1,
+    numIter: 1000,
+    initialTemp: 1000,
+    coolingFactor: 0.99,
+    minTemp: 1.0
+  },
+  wheelSensitivity: 0.1 // Lowering the zoom increment
 });
 
+// Event listener to highlight the entire chain of prerequisites on hover
+cy.on('mouseover', 'node', function (event) {
+  const node = event.target;
+  const connectedNodes = node.predecessors().add(node);
 
-// Functions for drag events
-function dragstarted(event, d) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-}
+  connectedNodes.addClass('highlighted');
+});
 
-function dragged(event, d) {
-    d.fx = event.x;
-    d.fy = event.y;
-}
+cy.on('mouseout', 'node', function (event) {
+  const node = event.target;
+  const connectedNodes = node.predecessors().add(node);
 
-function dragended(event, d) {
-    if (!event.active) simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-}
+  connectedNodes.removeClass('highlighted');
+});
+
+// Event listener to add hyperlinks to nodes
+cy.on('tap', 'node', function (event) {
+  const node = event.target;
+  const courseId = node.data('name').replace(/\s/g, '%20');
+  const url = `https://catalog.oregonstate.edu/search/?P=${courseId}`;
+  
+  window.open(url, '_blank');
+});

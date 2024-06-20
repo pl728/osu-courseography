@@ -1,20 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fabric.js Network Graph</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/fabric"></script>
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script type="module" src="script.js"></script>
+  <title>Cytoscape.js Fullscreen Example</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.20.1/cytoscape.min.js"></script>
 </head>
 <body>
-    <div class="title-bar">
-        <h1>Course Prerequisite Network</h1>
-    </div>
-    <div class="canvas-container">
-        <div id="canvas-container"></div>
-    </div>
+  <div id="title-bar">Cytoscape.js Graph</div>
+  <div id="cy"></div>
+  <script src="script.js"></script>
 </body>
 </html>
