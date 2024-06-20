@@ -1,80 +1,144 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
+// const nodes = [
+//     { id: 101, x: 100, y: 100, name: "CS 101" },
+//     { id: 161, x: 100, y: 200, name: "CS 161" }
+// ];
+
+// const links = [
+//     { source: 161, target: 162 },
+//     { source: 161, target: 271 }
+// ];
+
 const nodes = [
-    { id: 101, x: 100, y: 100, name: "CS 101: COMPUTERS: APPLICATIONS AND IMPLICATIONS" },
-    { id: 161, x: 100, y: 200, name: "CS 161: INTRODUCTION TO COMPUTER SCIENCE I" },
-    { id: 162, x: 100, y: 300, name: "CS 162: INTRODUCTION TO COMPUTER SCIENCE II" },
-    { id: 1621, x: 100, y: 400, name: "CS 162H: INTRODUCTION TO COMPUTER SCIENCE II" },
-    { id: 201, x: 100, y: 500, name: "CS 201: COMPUTER PROGRAMMING FOR NON-CS MAJORS" },
-    { id: 225, x: 100, y: 600, name: "CS 225: DISCRETE STRUCTURES IN COMPUTER SCIENCE" },
-    { id: 261, x: 100, y: 700, name: "CS 261: DATA STRUCTURES" },
-    { id: 271, x: 100, y: 800, name: "CS 271: COMPUTER ARCHITECTURE AND ASSEMBLY LANGUAGE" },
-    { id: 274, x: 100, y: 900, name: "CS 274: INTRODUCTION TO SYSTEMS PROGRAMMING" },
-    { id: 290, x: 100, y: 1000, name: "CS 290: WEB DEVELOPMENT" },
-    { id: 312, x: 100, y: 1100, name: "CS 312: SYSTEM ADMINISTRATION" },
-    { id: 321, x: 100, y: 1200, name: "CS 321: INTRODUCTION TO THEORY OF COMPUTATION" },
-    { id: 325, x: 100, y: 1300, name: "CS 325: ANALYSIS OF ALGORITHMS" },
-    { id: 331, x: 100, y: 1400, name: "CS 331: INTRODUCTION TO ARTIFICIAL INTELLIGENCE" },
-    { id: 340, x: 100, y: 1500, name: "CS 340: INTRODUCTION TO DATABASES" },
-    { id: 344, x: 100, y: 1600, name: "CS 344: OPERATING SYSTEMS I" },
-    { id: 352, x: 100, y: 1700, name: "CS 352: INTRODUCTION TO USABILITY ENGINEERING" },
-    { id: 361, x: 100, y: 1800, name: "CS 361: SOFTWARE ENGINEERING I" },
-    { id: 362, x: 100, y: 1900, name: "CS 362: SOFTWARE ENGINEERING II" },
-    { id: 3621, x: 100, y: 2000, name: "CS 362H: SOFTWARE ENGINEERING II" },
-    { id: 370, x: 100, y: 2100, name: "CS 370: INTRODUCTION TO SECURITY" },
-    { id: 372, x: 100, y: 2200, name: "CS 372: INTRODUCTION TO COMPUTER NETWORKS" },
-    { id: 373, x: 100, y: 2300, name: "CS 373: DEFENSE AGAINST THE DARK ARTS" },
-    { id: 381, x: 100, y: 2400, name: "CS 381: PROGRAMMING LANGUAGE FUNDAMENTALS" },
-    { id: 391, x: 100, y: 2500, name: "CS 391: SOCIAL AND ETHICAL ISSUES IN COMPUTER SCIENCE" },
-    { id: 3911, x: 100, y: 2600, name: "CS 391H: SOCIAL AND ETHICAL ISSUES IN COMPUTER SCIENCE" },
-    { id: 440, x: 100, y: 2700, name: "CS 440: DATABASE MANAGEMENT SYSTEMS" },
-    { id: 444, x: 100, y: 2800, name: "CS 444: OPERATING SYSTEMS II" },
-    { id: 450, x: 100, y: 2900, name: "CS 450: INTRODUCTION TO COMPUTER GRAPHICS" },
-    { id: 462, x: 100, y: 3000, name: "CS 462: SENIOR SOFTWARE ENGINEERING PROJECT II" },
-    { id: 463, x: 100, y: 3100, name: "CS 463: SENIOR SOFTWARE ENGINEERING PROJECT" },
-    { id: 464, x: 100, y: 3200, name: "CS 464: OPEN SOURCE SOFTWARE" },
-    { id: 473, x: 100, y: 3300, name: "CS 473: INTRODUCTION TO DIGITAL FORENSICS" },
-    { id: 474, x: 100, y: 3400, name: "CS 474: OPERATING SYSTEMS II" },
-    { id: 478, x: 100, y: 3500, name: "CS 478: NETWORK SECURITY" },
-    { id: 491, x: 100, y: 3600, name: "CS 491: COMPUTER SCIENCE SKILLS FOR SIMULATION AND GAME PROGRAMMING" },
-    { id: 492, x: 100, y: 3700, name: "CS 492: MOBILE SOFTWARE DEVELOPMENT" },
-    { id: 493, x: 100, y: 3800, name: "CS 493: CLOUD APPLICATION DEVELOPMENT" },
-    { id: 494, x: 100, y: 3900, name: "CS 494: ADVANCED WEB DEVELOPMENT" }
+    { id: 112, x: 100, y: 100, name: "MTH 112" },
+    { id: 161, x: 200, y: 100, name: "CS 161" },
+    { id: 162, x: 300, y: 100, name: "CS 162" },
+    { id: 225, x: 400, y: 100, name: "CS 225" },
+    { id: 261, x: 500, y: 100, name: "CS 261" },
+    { id: 271, x: 600, y: 100, name: "CS 271" },
+    { id: 274, x: 700, y: 100, name: "CS 274" },
+    { id: 290, x: 800, y: 100, name: "CS 290" },
+    { id: 312, x: 900, y: 100, name: "CS 312" },
+    { id: 321, x: 1000, y: 100, name: "CS 321" },
+    { id: 325, x: 1100, y: 100, name: "CS 325" },
+    { id: 331, x: 1200, y: 100, name: "CS 331" },
+    { id: 340, x: 1300, y: 100, name: "CS 340" },
+    { id: 344, x: 1400, y: 100, name: "CS 344" },
+    { id: 361, x: 1500, y: 100, name: "CS 361" },
+    { id: 362, x: 1600, y: 100, name: "CS 362" },
+    { id: 370, x: 1700, y: 100, name: "CS 370" },
+    { id: 372, x: 1800, y: 100, name: "CS 372" },
+    { id: 373, x: 1900, y: 100, name: "CS 373" },
+    { id: 381, x: 2000, y: 100, name: "CS 381" },
+    { id: 420, x: 2100, y: 100, name: "CS 420" },
+    { id: 424, x: 2200, y: 100, name: "CS 424" },
+    { id: 425, x: 2300, y: 100, name: "CS 425" },
+    { id: 426, x: 2400, y: 100, name: "CS 426" },
+    { id: 427, x: 2500, y: 100, name: "CS 427" },
+    { id: 428, x: 2600, y: 100, name: "CS 428" },
+    { id: 434, x: 2700, y: 100, name: "CS 434" },
+    { id: 440, x: 2800, y: 100, name: "CS 440" },
+    { id: 444, x: 2900, y: 100, name: "CS 444" },
+    { id: 450, x: 3000, y: 100, name: "CS 450" },
+    { id: 453, x: 3100, y: 100, name: "CS 453" },
+    { id: 457, x: 3200, y: 100, name: "CS 457" },
+    { id: 458, x: 3300, y: 100, name: "CS 458" },
+    { id: 461, x: 3400, y: 100, name: "CS 461" },
+    { id: 462, x: 3500, y: 100, name: "CS 462" },
+    { id: 463, x: 3600, y: 100, name: "CS 463" },
+    { id: 464, x: 3700, y: 100, name: "CS 464" },
+    { id: 467, x: 3800, y: 100, name: "CS 467" },
+    { id: 468, x: 3900, y: 100, name: "CS 468" },
+    { id: 472, x: 4000, y: 100, name: "CS 472" },
+    { id: 473, x: 4100, y: 100, name: "CS 473" },
+    { id: 474, x: 4200, y: 100, name: "CS 474" },
+    { id: 475, x: 4300, y: 100, name: "CS 475" },
+    { id: 476, x: 4400, y: 100, name: "CS 476" },
+    { id: 478, x: 4500, y: 100, name: "CS 478" },
+    { id: 480, x: 4600, y: 100, name: "CS 480" },
+    { id: 491, x: 4700, y: 100, name: "CS 491" },
+    { id: 492, x: 4800, y: 100, name: "CS 492" },
+    { id: 493, x: 4900, y: 100, name: "CS 493" }
 ];
 
 const links = [
+    { source: 112, target: 161 },
     { source: 161, target: 162 },
-    { source: 161, target: 271 },
-    { source: 162, target: 201 },
+    { source: 112, target: 225 },
     { source: 162, target: 261 },
+    { source: 225, target: 261 },
     { source: 162, target: 274 },
     { source: 162, target: 290 },
-    { source: 225, target: 261 },
+    { source: 344, target: 312 },
     { source: 261, target: 321 },
+    { source: 225, target: 321 },
     { source: 261, target: 325 },
+    { source: 225, target: 325 },
+    { source: 325, target: 331 },
+    { source: 290, target: 340 },
     { source: 261, target: 344 },
+    { source: 271, target: 344 },
     { source: 261, target: 361 },
     { source: 261, target: 362 },
-    { source: 261, target: 381 },
-    { source: 290, target: 340 },
-    { source: 312, target: 312 },
-    { source: 321, target: 325 },
-    { source: 325, target: 331 },
     { source: 344, target: 370 },
-    { source: 344, target: 444 },
+    { source: 261, target: 372 },
+    { source: 271, target: 372 },
+    { source: 340, target: 373 },
+    { source: 344, target: 373 },
     { source: 372, target: 373 },
-    { source: 372, target: 478 },
-    { source: 361, target: 462 },
-    { source: 362, target: 463 },
+    { source: 261, target: 381 },
+    { source: 225, target: 381 },
+    { source: 325, target: 420 },
+    { source: 370, target: 424 },
+    { source: 372, target: 424 },
+    { source: 424, target: 425 },
+    { source: 425, target: 426 },
+    { source: 261, target: 427 },
+    { source: 424, target: 428 },
+    { source: 372, target: 428 },
+    { source: 325, target: 434 },
+    { source: 340, target: 440 },
+    { source: 261, target: 444 },
+    { source: 344, target: 444 },
+    { source: 271, target: 444 },
+    { source: 261, target: 450 },
+    { source: 261, target: 453 },
+    { source: 261, target: 457 },
+    { source: 361, target: 458 },
+    { source: 325, target: 461 },
+    { source: 361, target: 461 },
     { source: 362, target: 462 },
+    { source: 461, target: 462 },
+    { source: 462, target: 463 },
+    { source: 261, target: 464 },
+    { source: 361, target: 464 },
+    { source: 361, target: 467 },
+    { source: 362, target: 467 },
+    { source: 344, target: 467 },
+    // { source: 352, target: 468 },
+    { source: 344, target: 472 },
+    { source: 370, target: 473 },
     { source: 344, target: 473 },
-    { source: 344, target: 474 },
-    { source: 362, target: 464 },
-    { source: 290, target: 492 },
+    { source: 261, target: 475 },
+    { source: 372, target: 476 },
+    { source: 372, target: 478 },
+    { source: 344, target: 480 },
+    { source: 321, target: 480 },
+    { source: 381, target: 480 },
+    { source: 261, target: 491 },
+    { source: 225, target: 491 },
+    // { source: 252, target: 491 },
+    { source: 344, target: 492 },
     { source: 290, target: 493 },
-    { source: 290, target: 494 },
+    { source: 340, target: 493 },
+    { source: 372, target: 493 }
 ];
 
+// Define a color scale for different course levels
+const colorScale = d3.scaleOrdinal()
+    .domain(["100", "200", "300", "400", "500"])
+    .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]);
 
 
 // Create the SVG element
@@ -110,7 +174,7 @@ window.addEventListener("resize", () => {
 
 // Create a simulation for the force layout
 const simulation = d3.forceSimulation(nodes)
-    .force("link", d3.forceLink(links).id(d => d.id).distance(200).strength(2)) // Adjust link distance and strength
+    .force("link", d3.forceLink(links).id(d => d.id).distance(50).strength(1)) // Adjust link distance and strength
     .force("charge", d3.forceManyBody().strength(-250)) // Adjust charge strength
     .force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2).strength(0.1)); // Increase centering force strength
 
@@ -131,22 +195,27 @@ const node = svg.append("g")
     .data(nodes)
     .enter().append("circle")
     .attr("r", 10)
-    .attr("fill", "#69b3a2")
+    .attr("fill", d => colorScale(d.name.split(" ")[1].substring(0, 1) + "00")) // Apply color based on course level
     .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended));
+
 
 // Add labels
 const label = svg.append("g")
     .attr("class", "labels")
     .selectAll("text")
     .data(nodes)
-    .enter().append("text")
+    .enter().append("a") // Append <a> element
+    .attr("xlink:href", d => `https://catalog.oregonstate.edu/search/?P=${d.name.replace(' ', '%20')}`) // Set the href attribute
+    .attr("target", "_blank") // Open link in new tab
+    .append("text") // Append <text> element
     .attr("dy", -10)
     .attr("text-anchor", "middle")
     .attr("style", "font-size: 10px;") // Adjust the font size here
     .text(d => d.name);
+
 
 // Update positions on each tick
 simulation.on("tick", () => {
@@ -169,6 +238,13 @@ simulation.on("tick", () => {
 function zoomed(event) {
     svg.attr("transform", event.transform);
 }
+
+nodes.forEach(node => {
+    if ([112, 161, 162, 225, 261].includes(node.id)) { // Example: pinning these nodes
+        node.fixed = true;
+    }
+});
+
 
 // Functions for drag events
 function dragstarted(event, d) {
