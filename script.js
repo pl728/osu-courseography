@@ -1,3 +1,5 @@
+import dagre from 'cytoscape-dagre';
+
 // Original data
 const nodes = [
     { id: 112, x: 100, y: 100, name: "MTH 112" },
@@ -133,65 +135,61 @@ const cyEdges = links.map(link => ({
 }));
 
 // Initialize Cytoscape
-var cy = cytoscape({
-  container: document.getElementById('cy'),
-  elements: [...cyNodes, ...cyEdges],
-  style: [
-    {
-      selector: 'node',
-      style: {
-        'background-color': '#28a745',
-        'label': 'data(name)',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'color': '#fff',
-        'text-outline-width': 2,
-        'text-outline-color': '#28a745',
-        'font-size': 14,
-        'shape': 'round-rectangle',
-        'width': 'label',
-        'height': 'label',
-        'padding': '10px'
+const cy = cytoscape({
+    container: document.getElementById('cy'),
+    elements: [...cyNodes, ...cyEdges],
+    style: [
+      {
+        selector: 'node',
+        style: {
+          'background-color': '#28a745',
+          'label': 'data(name)',
+          'text-valign': 'center',
+          'text-halign': 'center',
+          'color': '#fff',
+          'text-outline-width': 2,
+          'text-outline-color': '#28a745',
+          'font-size': 14,
+          'shape': 'round-rectangle',
+          'width': 'label',
+          'height': 'label',
+          'padding': '10px'
+        }
+      },
+      {
+        selector: 'edge',
+        style: {
+          'width': 4,
+          'line-color': '#333',
+          'target-arrow-color': '#333',
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier'
+        }
+      },
+      {
+        selector: '.highlighted',
+        style: {
+          'background-color': '#ffeb3b',
+          'line-color': '#ffeb3b',
+          'target-arrow-color': '#ffeb3b',
+          'transition-property': 'background-color, line-color, target-arrow-color',
+          'transition-duration': '0.5s'
+        }
       }
+    ],
+    layout: {
+      name: 'dagre',
+      fit: true,
+      padding: 10,
+      rankDir: 'LR', // You can change this to 'TB' for top-to-bottom layout
+      nodeSep: 15,  // Node separation
+      edgeSep: 15,  // Edge separation
+      rankSep: 100, // Rank separation
+      animate: true,
+      animationDuration: 500
     },
-    {
-      selector: 'edge',
-      style: {
-        'width': 4,
-        'line-color': '#333',
-        'target-arrow-color': '#333',
-        'target-arrow-shape': 'triangle',
-        'curve-style': 'bezier'
-      }
-    },
-    {
-      selector: '.highlighted',
-      style: {
-        'background-color': '#ffeb3b',
-        'line-color': '#ffeb3b',
-        'target-arrow-color': '#ffeb3b',
-        'transition-property': 'background-color, line-color, target-arrow-color',
-        'transition-duration': '0.5s'
-      }
-    }
-  ],
-  layout: {
-    name: 'cose',
-    animate: true,
-    animationDuration: 1000,
-    fit: true,
-    padding: 10,
-    nodeRepulsion: function (node) { return 2048; },
-    idealEdgeLength: function (edge) { return 32; },
-    edgeElasticity: function (edge) { return 32; },
-    gravity: 1,
-    numIter: 1000,
-    initialTemp: 1000,
-    coolingFactor: 0.99,
-    minTemp: 1.0
-  },
-  wheelSensitivity: 0.1 // Lowering the zoom increment
-});
+    wheelSensitivity: 0.1 // Lowering the zoom increment
+  });
 
 // Event listener to highlight the entire chain of prerequisites on hover
 cy.on('mouseover', 'node', function (event) {
