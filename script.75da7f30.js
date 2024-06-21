@@ -12269,12 +12269,9 @@ var nodes = [{
   x: 3800,
   y: 100,
   name: "CS 467"
-}, {
-  id: 468,
-  x: 3900,
-  y: 100,
-  name: "CS 468"
-}, {
+},
+// { id: 468, x: 3900, y: 100, name: "CS 468" },
+{
   id: 472,
   x: 4000,
   y: 100,
@@ -12284,12 +12281,9 @@ var nodes = [{
   x: 4100,
   y: 100,
   name: "CS 473"
-}, {
-  id: 474,
-  x: 4200,
-  y: 100,
-  name: "CS 474"
-}, {
+},
+// { id: 474, x: 4200, y: 100, name: "CS 474" },
+{
   id: 475,
   x: 4300,
   y: 100,
@@ -12554,43 +12548,60 @@ var cyEdges = links.map(function (link) {
   };
 });
 
-// Initialize Cytoscape
+// init cytoscape
 var cy = cytoscape({
   container: document.getElementById('cy'),
   elements: [].concat(_toConsumableArray(cyNodes), _toConsumableArray(cyEdges)),
   style: [{
     selector: 'node',
     style: {
-      'background-color': '#28a745',
+      'background-color': '#FFA500',
+      // Vibrant orange color
       'label': 'data(name)',
       'text-valign': 'center',
       'text-halign': 'center',
       'color': '#fff',
-      'text-outline-width': 2,
-      'text-outline-color': '#28a745',
-      'font-size': 14,
+      'text-outline-width': 1,
+      'text-outline-color': '#FFA500',
+      'font-size': 12,
       'shape': 'round-rectangle',
       'width': 'label',
       'height': 'label',
-      'padding': '10px'
+      'padding': '8px',
+      // Slightly reduce padding for a sleeker look
+      'border-width': 2,
+      'border-color': '#fff'
     }
   }, {
     selector: 'edge',
     style: {
-      'width': 4,
-      'line-color': '#333',
-      'target-arrow-color': '#333',
+      'width': 2,
+      'line-color': '#ADD8E6',
+      // Match line color with node color for consistency
+      'target-arrow-color': '#ADD8E6',
       'target-arrow-shape': 'triangle',
       'curve-style': 'bezier'
     }
   }, {
     selector: '.highlighted',
     style: {
-      'background-color': '#ffeb3b',
-      'line-color': '#ffeb3b',
-      'target-arrow-color': '#ffeb3b',
+      'background-color': '#00008B',
+      // Darker highlight color
+      'line-color': '#00008B',
+      'target-arrow-color': '#00008B',
       'transition-property': 'background-color, line-color, target-arrow-color',
-      'transition-duration': '0.5s'
+      'transition-duration': '0.2s',
+      'color': '#000',
+      // Change text color to black for better readability
+      'text-outline-color': '#ffffff'
+    }
+  }, {
+    selector: '.highlighted node',
+    style: {
+      'color': '#000',
+      // Change text color to black for better readability
+      'text-outline-width': 2,
+      'text-outline-color': '#FFD700'
     }
   }],
   layout: {
@@ -12598,10 +12609,10 @@ var cy = cytoscape({
     fit: true,
     padding: 10,
     rankDir: 'LR',
-    // You can change this to 'TB' for top-to-bottom layout
-    nodeSep: 15,
+    // Left-to-right layout
+    nodeSep: 5,
     // Node separation
-    edgeSep: 15,
+    edgeSep: 5,
     // Edge separation
     rankSep: 100,
     // Rank separation
@@ -12655,7 +12666,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61003" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64689" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
