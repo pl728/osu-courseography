@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html --no-minify --public-url ./",
+    "deploy": "gh-pages -d dist"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +14,11 @@
   "dependencies": {
     "cytoscape-avsdf": "^1.0.0",
     "cytoscape-dagre": "^2.5.0",
+    "cytoscape-qtip": "^2.8.0",
     "fabric": "^5.3.0"
   },
   "devDependencies": {
+    "gh-pages": "^3.2.3",
     "live-server": "^1.2.2"
   }
 }

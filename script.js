@@ -40,10 +40,10 @@ const nodes = [
     { id: 463, x: 3600, y: 100, name: "CS 463" },
     { id: 464, x: 3700, y: 100, name: "CS 464" },
     { id: 467, x: 3800, y: 100, name: "CS 467" },
-    { id: 468, x: 3900, y: 100, name: "CS 468" },
+    // { id: 468, x: 3900, y: 100, name: "CS 468" },
     { id: 472, x: 4000, y: 100, name: "CS 472" },
     { id: 473, x: 4100, y: 100, name: "CS 473" },
-    { id: 474, x: 4200, y: 100, name: "CS 474" },
+    // { id: 474, x: 4200, y: 100, name: "CS 474" },
     { id: 475, x: 4300, y: 100, name: "CS 475" },
     { id: 476, x: 4400, y: 100, name: "CS 476" },
     { id: 478, x: 4500, y: 100, name: "CS 478" },
@@ -134,62 +134,81 @@ const cyEdges = links.map(link => ({
     data: { id: `${link.source}-${link.target}`, source: link.source, target: link.target }
 }));
 
-// Initialize Cytoscape
+// init cytoscape
 const cy = cytoscape({
     container: document.getElementById('cy'),
     elements: [...cyNodes, ...cyEdges],
     style: [
-      {
-        selector: 'node',
-        style: {
-          'background-color': '#28a745',
-          'label': 'data(name)',
-          'text-valign': 'center',
-          'text-halign': 'center',
-          'color': '#fff',
-          'text-outline-width': 2,
-          'text-outline-color': '#28a745',
-          'font-size': 14,
-          'shape': 'round-rectangle',
-          'width': 'label',
-          'height': 'label',
-          'padding': '10px'
+        {
+            selector: 'node',
+            style: {
+                'background-color': '#FFA500', // Vibrant orange color
+                'label': 'data(name)',
+                'text-valign': 'center',
+                'text-halign': 'center',
+                'color': '#fff',
+                'text-outline-width': 1,
+                'text-outline-color': '#FFA500',
+                'font-size': 12,
+                'shape': 'round-rectangle',
+                'width': 'label',
+                'height': 'label',
+                'padding': '8px', // Slightly reduce padding for a sleeker look
+                'border-width': 2,
+                'border-color': '#fff',
+            }
+        },
+        {
+            selector: 'edge',
+            style: {
+                'width': 2,
+                'line-color': '#ADD8E6', // Match line color with node color for consistency
+                'target-arrow-color': '#ADD8E6',
+                'target-arrow-shape': 'triangle',
+                'curve-style': 'bezier'
+            }
+        },
+        {
+            selector: '.highlighted',
+            style: {
+                'background-color': '#00008B', // Darker highlight color
+                'line-color': '#00008B',
+                'target-arrow-color': '#00008B',
+                'transition-property': 'background-color, line-color, target-arrow-color',
+                'transition-duration': '0.2s',
+                'color': '#000', // Change text color to black for better readability
+                'text-outline-color': '#ffffff'
+            }
+        },
+        {
+            selector: '.highlighted node',
+            style: {
+                'color': '#000', // Change text color to black for better readability
+                'text-outline-width': 2,
+                'text-outline-color': '#000000'
+            }
+        },
+                {
+            selector: 'node:hover',
+            style: {
+                'cursor': 'pointer' // Change cursor to pointer on hover
+            }
         }
-      },
-      {
-        selector: 'edge',
-        style: {
-          'width': 4,
-          'line-color': '#333',
-          'target-arrow-color': '#333',
-          'target-arrow-shape': 'triangle',
-          'curve-style': 'bezier'
-        }
-      },
-      {
-        selector: '.highlighted',
-        style: {
-          'background-color': '#ffeb3b',
-          'line-color': '#ffeb3b',
-          'target-arrow-color': '#ffeb3b',
-          'transition-property': 'background-color, line-color, target-arrow-color',
-          'transition-duration': '0.5s'
-        }
-      }
     ],
     layout: {
-      name: 'dagre',
-      fit: true,
-      padding: 10,
-      rankDir: 'LR', // You can change this to 'TB' for top-to-bottom layout
-      nodeSep: 15,  // Node separation
-      edgeSep: 15,  // Edge separation
-      rankSep: 100, // Rank separation
-      animate: true,
-      animationDuration: 500
+        name: 'dagre',
+        fit: true,
+        padding: 50,
+        rankDir: 'LR', // Left-to-right layout
+        nodeSep: 1,  // Node separation
+        edgeSep: 1,  // Edge separation
+        rankSep: 100, // Rank separation
+        ranker: 'network-simplex', // Use the network-simplex ranker
+        animate: true,
+        animationDuration: 500
     },
     wheelSensitivity: 0.1 // Lowering the zoom increment
-  });
+});
 
 // Event listener to highlight the entire chain of prerequisites on hover
 cy.on('mouseover', 'node', function (event) {
